@@ -3,17 +3,18 @@ import pygame
 import random
 
 pygame.init()
+
 s = 0
 dx, dy = 50, 300
 drx, dry = 50, 50
 dryz = dry
 
-kry, krx = [random.randrange(40, 60)], [random.randrange(20, 40)]
+
+kry, krx = [random.randrange(40, 55)], [random.randrange(20, 40)]
 kx, ky = [450], [400 - kry[0]]
-kxz = kx.copy()
 screen = pygame.display.set_mode((470, 500))
 running = True
-time_random = random.randrange(1, 5)
+time_random = random.randrange(2, 4)
 
 
 def collision(x, y, sizeX, sizeY, x2, y2, sizeX2, sizeY2):
@@ -21,7 +22,8 @@ def collision(x, y, sizeX, sizeY, x2, y2, sizeX2, sizeY2):
         return True
     return False
 
-
+tex_din = pygame.image.load("din.jpeg")
+tex_din = pygame.transform.scale(tex_din, (drx, dry))
 time1 = time.perf_counter()
 
 while running:
@@ -41,11 +43,16 @@ while running:
     time2 = time.perf_counter()
 
     if time2 - time1 > time_random:
-        kry.append(random.randrange(55, 80))
-        krx.append(random.randrange(55, 80))
-        kx.append(450)
-        ky.append(400 - kry[-1])
-        kxz.append(kx[-1])
+        if random.randrange(3) == 0:
+            kry.append(20)
+            krx.append(50)
+            kx.append(450)
+            ky.append(340)
+        else:
+            kry.append(random.randrange(50, 80))
+            krx.append(random.randrange(40, 60))
+            kx.append(450)
+            ky.append(400 - kry[-1])
         time1 = time.perf_counter()
         time_random = random.randrange(1, 4)
     for i in range(len(kry) - 1, -1, -1):
@@ -56,7 +63,6 @@ while running:
             del kry[i]
             del kx[i]
             del ky[i]
-            del kxz[i]
 
     screen.fill('black')
 
@@ -64,7 +70,8 @@ while running:
         if collision(dx, dy, drx, dry, kx[i], ky[i], krx[i], kry[i]):
             running = False
 
-    pygame.draw.rect(screen, (255, 255, 255), (dx, dy, drx, dry))
+
+    screen.blit(tex_din, (dx, dy))
     pygame.draw.rect(screen, (100, 100, 100), (0, 400, 500, 200))
 
     for i in range(len(kry)):
