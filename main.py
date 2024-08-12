@@ -3,7 +3,7 @@ import pygame
 import random
 
 pygame.init()
-
+time_start = time.perf_counter()
 s = 0
 dx, dy = 50, 300
 drx, dry = 50, 50
@@ -25,6 +25,8 @@ def collision(x, y, sizeX, sizeY, x2, y2, sizeX2, sizeY2):
 tex_din = pygame.image.load("din.jpeg")
 tex_din = pygame.transform.scale(tex_din, (drx, dry))
 time1 = time.perf_counter()
+
+font = pygame.font.Font(None, 20)
 
 while running:
     for event in pygame.event.get():
@@ -83,6 +85,10 @@ while running:
         s = 0
 
     dy -= s
+    time_current = time.perf_counter() - time_start
+
+    text = font.render(str(round(time_current, 1)), True, (255, 255, 255))
+    screen.blit(text, (0, 0))
 
     pygame.display.flip()
 pygame.quit()
