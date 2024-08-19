@@ -2,6 +2,10 @@ import time
 import pygame
 import random
 
+
+with open('record.txt', 'r', encoding='utf-8') as file:
+    record = float(file.readline())
+
 pygame.init()
 time_start = time.perf_counter()
 s = 0
@@ -87,8 +91,12 @@ while running:
     dy -= s
     time_current = time.perf_counter() - time_start
 
-    text = font.render(str(round(time_current, 1)), True, (255, 255, 255))
+    text = font.render(f'{round(time_current, 1)} record: {record}', True, (255, 255, 255))
     screen.blit(text, (0, 0))
 
     pygame.display.flip()
 pygame.quit()
+time_current = round(time.perf_counter() - time_start, 1)
+if time_current > record:
+    with open('record.txt', 'w', encoding='utf-8') as file:
+        file.write(str(time_current))
