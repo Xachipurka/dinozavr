@@ -27,10 +27,12 @@ def collision(x, y, sizeX, sizeY, x2, y2, sizeX2, sizeY2):
         return True
     return False
 
-tex_din = [pygame.image.load("din1.PNG"), pygame.image.load("din2.PNG")]
+tex_cact = pygame.image.load("cact.PNG")
+
+tex_din = [pygame.image.load("din1.PNG"), pygame.image.load("din2.PNG"), pygame.image.load('din.jpeg')]
 tex_din[0] = pygame.transform.scale(tex_din[0], (drx, dry))
 tex_din[1] = pygame.transform.scale(tex_din[1], (drx, dry))
-
+tex_din[2] = pygame.transform.scale(tex_din[2], (drx, dry))
 
 time1 = time.perf_counter()
 
@@ -96,19 +98,22 @@ while running:
     pygame.draw.rect(screen, (100, 100, 100), (0, 400, 500, 200))
 
     for i in range(len(kry)):
-        pygame.draw.rect(screen, (200, 200, 200), (kx[i], ky[i], krx[i], kry[i]))
+        tex_cact1 = pygame.transform.scale(tex_cact, (krx[i], kry[i]))
+        screen.blit(tex_cact1, (kx[i], ky[i]))
 
     if dy < 400 - dry:
         s -= 0.01
+        tex_number = 2
     elif s < 0:
         s = 0
+        tex_number = 0
 
     dy -= s
     time_current = time.perf_counter() - time_start
 
     text_time = font.render(f'Time: {round(time_current,  1)}', True, (255, 255, 255))
     text_record = font.render(f'Record: {record}', True, (255, 255, 255))
-#    text = font.render(f'{round(time_current, 1)} Record: {record}', True, (255, 255, 255))
+
     screen.blit(text_time, (20, 0))
     screen.blit(text_record, (370, 0))
 
