@@ -10,9 +10,10 @@ pygame.init()
 time_start = time.perf_counter()
 s = 0
 dx, dy = 50, 300
-drx, dry = 50, 50
+drx, dry = 70, 70
 dryz = dry
-
+time_tex1 = time.perf_counter()
+tex_number = 0
 
 kry, krx = [random.randrange(40, 55)], [random.randrange(20, 40)]
 kx, ky = [450], [400 - kry[0]]
@@ -26,8 +27,11 @@ def collision(x, y, sizeX, sizeY, x2, y2, sizeX2, sizeY2):
         return True
     return False
 
-tex_din = pygame.image.load("din.jpeg")
-tex_din = pygame.transform.scale(tex_din, (drx, dry))
+tex_din = [pygame.image.load("din1.PNG"), pygame.image.load("din2.PNG")]
+tex_din[0] = pygame.transform.scale(tex_din[0], (drx, dry))
+tex_din[1] = pygame.transform.scale(tex_din[1], (drx, dry))
+
+
 time1 = time.perf_counter()
 
 font = pygame.font.Font(None, 20)
@@ -76,8 +80,19 @@ while running:
         if collision(dx, dy, drx, dry, kx[i], ky[i], krx[i], kry[i]):
             running = False
 
+    time_tex2 = time.perf_counter()
+    if time_tex2 - time_tex1 > 0.2:
+        time_tex1 = time.perf_counter()
+        if tex_number == 0:
+            tex_number = 1
+        else:
+            tex_number = 0
 
-    screen.blit(tex_din, (dx, dy))
+
+    screen.blit(tex_din[tex_number], (dx, dy))
+
+
+
     pygame.draw.rect(screen, (100, 100, 100), (0, 400, 500, 200))
 
     for i in range(len(kry)):
@@ -91,8 +106,11 @@ while running:
     dy -= s
     time_current = time.perf_counter() - time_start
 
-    text = font.render(f'{round(time_current, 1)} record: {record}', True, (255, 255, 255))
-    screen.blit(text, (0, 0))
+    text_time = font.render(f'Time: {round(time_current,  1)}', True, (255, 255, 255))
+    text_record = font.render(f'Record: {record}', True, (255, 255, 255))
+#    text = font.render(f'{round(time_current, 1)} Record: {record}', True, (255, 255, 255))
+    screen.blit(text_time, (20, 0))
+    screen.blit(text_record, (370, 0))
 
     pygame.display.flip()
 pygame.quit()
